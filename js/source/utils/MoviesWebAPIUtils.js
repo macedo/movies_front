@@ -1,7 +1,17 @@
 import request from 'superagent';
 import superagentPromisePlugin  from 'superagent-promise-plugin';
-import { receiveAllMoviesAction, updateMovieAction } from '../actions/MoviesActions';
+import { createMovieAction, receiveAllMoviesAction, updateMovieAction } from '../actions/MoviesActions';
 
+export function createMovie(data) {
+  request
+    .post('http://localhost:4000/api/movies')
+    .send(data)
+    .set('Content-Type', 'application/vnd.api+json')
+    .use(superagentPromisePlugin)
+    .then((response) => {
+      createMovieAction(response.body.data);
+    });
+}
 export function getAllMovies() {
   request
     .get('http://localhost:4000/api/movies')

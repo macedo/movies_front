@@ -6,9 +6,13 @@ import { updateMovie } from '../utils/MoviesWebAPIUtils';
 const CHANGE_EVENT = 'change'
 let _movies = {};
 
+function _addMovie(movie) {
+  _movies[movie.id] = movie.attributes;
+}
+
 function _addMovies(movies) {
   movies.forEach((movie) => {
-    _movies[movie.id] = movie.attributes;
+    _addMovie(movie);
   });
 }
 
@@ -22,7 +26,7 @@ class MovieStore extends EventEmitter {
     this.register();
   }
 
-  addEventListener (callback) {
+  addChangeEventListener (callback) {
     this.on(CHANGE_EVENT, callback);
   }
 
@@ -42,8 +46,12 @@ class MovieStore extends EventEmitter {
   register () {
     this.dispatchToken = AppDispatcher.register((payload) => {
       switch(payload.type) {
+        case 'CREATE_MOVIE':
+          _addMovie(payload.data);
+          this.emitChange();
+          break;
         case 'RECEIVE_MOVIES':
-          _addMovies(payload.data)
+          _addMovies(payload.data);
           this.emitChange();
           break;
         case 'UPDATE_MOVIE':
@@ -55,7 +63,7 @@ class MovieStore extends EventEmitter {
     });
   }
 
-  removeEventListener (callback) {
+  removeChangeEventListener (callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }
 }

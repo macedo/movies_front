@@ -1,6 +1,7 @@
 import React from 'react';
 import MovieItem from './MovieItem';
 import MovieStore from '../stores/MovieStore';
+import { createMovie } from '../utils/MoviesWebAPIUtils';
 
 const movieStore = new MovieStore();
 
@@ -17,11 +18,17 @@ class MoviesListApp extends React.Component {
   }
 
   componentDidMount () {
-    movieStore.addEventListener(this._onChange.bind(this));
+    movieStore.addChangeEventListener(this._onChange.bind(this));
   }
 
   componentWillUnmount () {
-    movieStore.removeEventListener(this._onChange.bind(this));
+    movieStore.removeChangeEventListener(this._onChange.bind(this));
+  }
+
+  _onSubmitForm (event) {
+    event.preventDefault();
+    const input = event.target.firstChild;
+    createMovie({ movie: { name: input.value } });
   }
 
   render () {
@@ -35,9 +42,14 @@ class MoviesListApp extends React.Component {
     });
 
     return (
-      <ul>
-        {movieItems}
-      </ul>
+      <div>
+        <form onSubmit={this._onSubmitForm.bind(this)}>
+          <input type="text" />
+        </form>
+        <ul>
+          {movieItems}
+        </ul>
+      </div>
     )
   }
 
