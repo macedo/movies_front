@@ -16,6 +16,10 @@ function _addMovies(movies) {
   });
 }
 
+function _removeMovie(id) {
+  delete _movies[id];
+}
+
 function _updateMovie(movie) {
   _movies[movie.id] = movie.attributes; 
 }
@@ -48,6 +52,10 @@ class MovieStore extends EventEmitter {
       switch(payload.type) {
         case 'CREATE_MOVIE':
           _addMovie(payload.data);
+          this.emitChange();
+          break;
+        case 'DELETE_MOVIE':
+          _removeMovie(payload.data);
           this.emitChange();
           break;
         case 'RECEIVE_MOVIES':

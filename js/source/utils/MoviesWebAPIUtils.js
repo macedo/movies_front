@@ -1,6 +1,6 @@
 import request from 'superagent';
 import superagentPromisePlugin  from 'superagent-promise-plugin';
-import { createMovieAction, receiveAllMoviesAction, updateMovieAction } from '../actions/MoviesActions';
+import { createMovieAction, deleteMovieAction, receiveAllMoviesAction, updateMovieAction } from '../actions/MoviesActions';
 
 export function createMovie(data) {
   request
@@ -12,6 +12,17 @@ export function createMovie(data) {
       createMovieAction(response.body.data);
     });
 }
+
+export function deleteMovie(id) {
+  request
+    .delete(`http://localhost:4000/api/movies/${id}`)
+    .set('Content-Type', 'application/vnd.api+json')
+    .use(superagentPromisePlugin)
+    .then((response) => {
+      deleteMovieAction(id);
+    });
+}
+
 export function getAllMovies() {
   request
     .get('http://localhost:4000/api/movies')

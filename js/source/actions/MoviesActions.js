@@ -7,10 +7,17 @@ export function createMovieAction(movie) {
   });
 }
 
-export function receiveAllMoviesAction(data) {
+export function deleteMovieAction(id) {
+  AppDispatcher.dispatch({
+    type: 'DELETE_MOVIE',
+    data: id
+  });
+}
+
+export function receiveAllMoviesAction(movies) {
   AppDispatcher.dispatch({
     type: 'RECEIVE_MOVIES',
-    data: data
+    data: movies
   });
 }
 

@@ -1,6 +1,6 @@
 import classNames from 'classNames';
 import React from 'react';
-import { updateMovie } from '../utils/MoviesWebAPIUtils';
+import { deleteMovie, updateMovie } from '../utils/MoviesWebAPIUtils';
 
 class MovieItem extends React.Component{
   constructor (props) {
@@ -8,6 +8,11 @@ class MovieItem extends React.Component{
     this.state = {
       editMode: null
     }
+  }
+
+  _deleteMovie () {
+    const movie = this.props.movie;
+    deleteMovie(movie.id);
   }
 
   _onToggleWatched () {
@@ -39,6 +44,7 @@ class MovieItem extends React.Component{
     return (
       <span onDoubleClick={this._showEditor.bind(this)}>
         {movie.name}
+        <button onClick={this._deleteMovie.bind(this)}>x</button>
       </span>
     )
   }
