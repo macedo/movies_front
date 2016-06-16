@@ -1,4 +1,8 @@
 .bundle
 bin
 node_modules
-js/build/
+assets/js/build/
+vendor
+_site/assets/*.js
+_site/assets/*.css
+_site/*.html
